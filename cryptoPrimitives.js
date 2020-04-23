@@ -8,13 +8,13 @@ const Crypt = require('hybrid-crypto-js').Crypt;
 ///////////////////////////////////////////////////////////////////////////////////////
 
 function encryptAES(plaintext, secretPassphrase) {
-	const encrypted = CryptoJS.AES.encrypt(plaintext, secretPassphrase)
-	return encrypted
+	const encrypted = CryptoJS.AES.encrypt(plaintext, secretPassphrase);
+	return encrypted;
 }
 
 function decryptAES(ciphertext, secretPassphrase) {
-	const decrypted = CryptoJS.AES.decrypt(ciphertext, secretPassphrase)
-	return toString(decrypted)
+	const decrypted = CryptoJS.AES.decrypt(ciphertext, secretPassphrase);
+	return toString(decrypted);
 }
 
 function toString(bytes) {
@@ -81,4 +81,4 @@ module.exports = {
 	encryptAES, decryptAES, createAsymKeyPair,
 	encryptAsymWithSignature, decryptAsymWithSignature,
 	encryptRsa, decryptRsa, createRsaKeyPair
-}
+};

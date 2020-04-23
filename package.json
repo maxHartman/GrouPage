@@ -1,23 +1,24 @@
 {
-  "name": "final_project",
-  "version": "1.0.0",
-  "description": "__Authors__: Max Hartman, Aspyn Palatnick   __Date__: Spring 2020",
-  "main": "main.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW/issues"
-  },
-  "homepage": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW#readme",
-  "dependencies": {
-    "asymmetric-crypto": "^1.0.2",
-    "crypto-js": "^4.0.0"
-  }
+	"name": "final_project",
+	"version": "1.0.0",
+	"description": "__Authors__: Max Hartman, Aspyn Palatnick   __Date__: Spring 2020",
+	"main": "main.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW/issues"
+	},
+	"homepage": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW#readme",
+	"dependencies": {
+		"asymmetric-crypto": "^1.0.2",
+		"crypto-js": "^4.0.0",
+		"hybrid-crypto-js": "^0.2.2"
+	}
 }
