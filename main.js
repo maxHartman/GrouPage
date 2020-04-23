@@ -1,4 +1,5 @@
 const primitives = require('./cryptoPrimitives');
+const vcs = require('./vcs');
 
 
 /////////////////////////////////      SYMMETRIC      /////////////////////////////////
@@ -23,6 +24,7 @@ decrypted = primitives.decryptAsymWithSignature(encrypted, myKeyPair.publicKey, 
 
 console.log(decrypted);
 
+
 /////////////////////////////////         RSA         /////////////////////////////////
 
 plaintext = "rsa test";
@@ -33,4 +35,7 @@ plaintext = "rsa test";
 	decrypted = primitives.decryptRsa(encrypted, keyPair.privateKey);
 
 	console.log(decrypted);
+
+	const publicKeys = [keyPair.publicKey];
+	// TODO use vcs
 })();
