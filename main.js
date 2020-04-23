@@ -1,18 +1,36 @@
 const primitives = require('./cryptoPrimitives');
 
-var plaintext = "testing";
+
+/////////////////////////////////      SYMMETRIC      /////////////////////////////////
+
+var plaintext = "symmetric test";
 var passpharase = "secret 123";
 
-var ciphertext = primitives.encryptAES(plaintext, passpharase);
-var plaintext = primitives.decryptAES(ciphertext, passpharase);
-console.log(primitives.toString(plaintext));
+var encrypted = primitives.encryptAES(plaintext, passpharase);
+var decrypted = primitives.decryptAES(encrypted, passpharase);
+
+console.log(decrypted);
 
 
-// ASYMMETRIC CRYPTO
+/////////////////////////////////     ASYMMETRIC      /////////////////////////////////
 
-const myKeyPair = primitives.createKeyPair();
-const theirKeyPair = primitives.createKeyPair();
+plaintext = "asymmetric test";
+const myKeyPair = primitives.createAsymKeyPair();
+const theirKeyPair = primitives.createAsymKeyPair();
 
-const encryptedStuff = primitives.encryptAsym('something', theirKeyPair.publicKey, myKeyPair.secretKey);
-const decryptedStuff = primitives.decryptAsym(encryptedStuff, myKeyPair.publicKey, theirKeyPair.secretKey);
-console.log(decryptedStuff);
+encrypted = primitives.encryptAsymWithSignature(plaintext, theirKeyPair.publicKey, myKeyPair.secretKey);
+decrypted = primitives.decryptAsymWithSignature(encrypted, myKeyPair.publicKey, theirKeyPair.secretKey);
+
+console.log(decrypted);
+
+/////////////////////////////////         RSA         /////////////////////////////////
+
+plaintext = "rsa test";
+
+(async () => {
+	const keyPair = await primitives.createRsaKeyPair();
+	encrypted = primitives.encryptRsa(plaintext, keyPair.publicKey);
+	decrypted = primitives.decryptRsa(encrypted, keyPair.privateKey);
+
+	console.log(decrypted);
+})();
