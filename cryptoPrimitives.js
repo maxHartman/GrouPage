@@ -29,11 +29,11 @@ function createAsymKeyPair() {
 	return crypto.keyPair();
 }
 
-/*
- * Returns {
- *   data: '63tP2r8WQuJ+k+jzsd8pbT6WYPHMTafpeg==',
- *   nonce: 'BDHALdoeBiGg7wJbVdfJhVQQyvpxrBSo'
- * }
+/**
+ * @returns {
+ * 		data: '63tP2r8WQuJ+k+jzsd8pbT6WYPHMTafpeg==',
+ *		nonce: 'BDHALdoeBiGg7wJbVdfJhVQQyvpxrBSo'
+ * 	}
  */
 function encryptAsymWithSignature(plaintext, theirPublicKey, mySecretKey) {
 	const encrypted = crypto.encrypt(plaintext, theirPublicKey, mySecretKey);
@@ -45,6 +45,7 @@ function decryptAsymWithSignature(cipherData, myPublicKey, theirSecretKey) {
 	const ciptertext = cipherData.data;
 	const nonce = cipherData.nonce;
 	const decrypted = crypto.decrypt(ciptertext, nonce, myPublicKey, theirSecretKey);
+
 	return decrypted;
 }
 
@@ -70,6 +71,7 @@ function encryptRsa(plaintext, publicKey) {
 function decryptRsa(ciphertext, privateKey) {
 	const decryptedData = crypt.decrypt(privateKey, ciphertext);
 	const decrypted = decryptedData.message;
+
 	return decrypted;
 }
 
