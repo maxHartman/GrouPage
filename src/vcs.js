@@ -8,13 +8,13 @@ const utils = require("./utils");
  * @returns	{Array<String>}				Encoded vector
  */
 function encode(plaintext, publicKeys) {
-  const cipherVector = [];
+	const cipherVector = [];
 
-  for (const publicKey of publicKeys) {
-    cipherVector.push(primitives.encryptRsa(plaintext, publicKey));
-  }
+	for (const publicKey of publicKeys) {
+		cipherVector.push(primitives.encryptRsa(plaintext, publicKey));
+	}
 
-  return cipherVector;
+	return cipherVector;
 }
 
 /**
@@ -25,10 +25,10 @@ function encode(plaintext, publicKeys) {
  * @returns	{String}						Plain text version of ith entry
  */
 function decode(cipherVector, i, secretKey) {
-  const ciphertext = cipherVector[i];
-  const plaintext = primitives.decryptRsa(ciphertext, secretKey);
+	const ciphertext = cipherVector[i];
+	const plaintext = primitives.decryptRsa(ciphertext, secretKey);
 
-  return plaintext;
+	return plaintext;
 }
 
 /**
@@ -40,9 +40,9 @@ function decode(cipherVector, i, secretKey) {
  * @returns {Boolean}						The validity of the comparison
  */
 function verify(cipherVector, i, secretKey, publicKeys) {
-  const plaintext = decode(cipherVector, i, secretKey, publicKeys);
-  const checkingVector = encode(plaintext, publicKeys);
-  return utils.keysEqual(checkingVector, cipherVector);
+	const plaintext = decode(cipherVector, i, secretKey, publicKeys);
+	const checkingVector = encode(plaintext, publicKeys);
+	return utils.keysEqual(checkingVector, cipherVector);
 }
 
 module.exports = { encode, decode, verify };

@@ -18,14 +18,14 @@ const myKeyPair = primitives.createAsymKeyPair();
 const theirKeyPair = primitives.createAsymKeyPair();
 
 encrypted = primitives.encryptAsymWithSignature(
-  plaintext,
-  theirKeyPair.publicKey,
-  myKeyPair.secretKey
+	plaintext,
+	theirKeyPair.publicKey,
+	myKeyPair.secretKey
 );
 decrypted = primitives.decryptAsymWithSignature(
-  encrypted,
-  myKeyPair.publicKey,
-  theirKeyPair.secretKey
+	encrypted,
+	myKeyPair.publicKey,
+	theirKeyPair.secretKey
 );
 
 console.log(decrypted);
@@ -35,19 +35,19 @@ console.log(decrypted);
 plaintext = "rsa test";
 
 (async () => {
-  //   const keyPair = await primitives.createRsaKeyPair();
-  //   encrypted = primitives.encryptRsa(plaintext, keyPair.publicKey);
-  //   decrypted = primitives.decryptRsa(encrypted, keyPair.privateKey);
-  //   console.log(decrypted);
-  //   const publicKeys = [keyPair.publicKey];
-  //   const e = vcs.encode("foo", publicKeys);
-  //   const f1 = vcs.encode("foo", publicKeys);
-  //   const f2 = vcs.encode("foo", publicKeys);
-  //   console.log(vcs.decode(f1, 0, keyPair.privateKey));
-  //   console.log(vcs.decode(f2, 0, keyPair.privateKey));
-  //   const isVerified = vcs.verify(e, 0, keyPair.privateKey, publicKeys);
-  //   console.log(isVerified);
-  // TODO use vcs
+	//   const keyPair = await primitives.createRsaKeyPair();
+	//   encrypted = primitives.encryptRsa(plaintext, keyPair.publicKey);
+	//   decrypted = primitives.decryptRsa(encrypted, keyPair.privateKey);
+	//   console.log(decrypted);
+	//   const publicKeys = [keyPair.publicKey];
+	//   const e = vcs.encode("foo", publicKeys);
+	//   const f1 = vcs.encode("foo", publicKeys);
+	//   const f2 = vcs.encode("foo", publicKeys);
+	//   console.log(vcs.decode(f1, 0, keyPair.privateKey));
+	//   console.log(vcs.decode(f2, 0, keyPair.privateKey));
+	//   const isVerified = vcs.verify(e, 0, keyPair.privateKey, publicKeys);
+	//   console.log(isVerified);
+	// TODO use vcs
 })();
 
 /**
@@ -97,53 +97,53 @@ plaintext = "rsa test";
  *
  */
 async function paperWalkthrough() {
-  const aliceKeyPair = await primitives.createRsaKeyPair();
-  const publicKeys = [aliceKeyPair.publicKey];
-  const secretKey = aliceKeyPair.privateKey;
-  const i = 0;
+	const aliceKeyPair = await primitives.createRsaKeyPair();
+	const publicKeys = [aliceKeyPair.publicKey];
+	const secretKey = aliceKeyPair.privateKey;
+	const i = 0;
 
-  // Step 1
-  const x = Math.random().toString();
+	// Step 1
+	const x = Math.random().toString();
 
-  // Step 2
-  const e = vcs.encode(x, publicKeys);
+	// Step 2
+	const e = vcs.encode(x, publicKeys);
 
-  // Step 3
-  // Bob sends e, i to Alice (Server sends e, i to client)
+	// Step 3
+	// Bob sends e, i to Alice (Server sends e, i to client)
 
-  //   Step 4
-  const xAliceGets = vcs.decode(e, i, secretKey);
+	//   Step 4
+	const xAliceGets = vcs.decode(e, i, secretKey);
 
-  //   Step 4.1...
-  const isVerified = vcs.verify(e, i, secretKey, publicKeys);
-  if (!isVerified) {
-    return "ERROR - e does not satisfy commonality";
-  }
+	//   Step 4.1...
+	const isVerified = vcs.verify(e, i, secretKey, publicKeys);
+	if (!isVerified) {
+		return "ERROR - e does not satisfy commonality";
+	}
 
-  //   Step 5
-  // Alice sends xAliceGets to Bob (client sends xAliceGets to server)
+	//   Step 5
+	// Alice sends xAliceGets to Bob (client sends xAliceGets to server)
 
-  //   Step 6
-  //   Bob checks xAliceGets is the same as x
-  const bobAgreesAliceIsVerified = xAliceGets === x;
+	//   Step 6
+	//   Bob checks xAliceGets is the same as x
+	const bobAgreesAliceIsVerified = xAliceGets === x;
 
-  //   Step 7
-  // Bob now knows alice is a member of publicKeys
+	//   Step 7
+	// Bob now knows alice is a member of publicKeys
 }
 
 (async () => {
-  const NodeRSA = require("node-rsa");
-  const key = new NodeRSA({ b: 512 }, undefined, {
-    encryptionScheme: "PKCS1",
-  });
-  const publicComponents = JSON.stringify(key.exportKey("components-public"));
-  console.log(publicComponents);
+	const NodeRSA = require("node-rsa");
+	const key = new NodeRSA({ b: 512 }, undefined, {
+		encryptionScheme: "PKCS1",
+	});
+	const publicComponents = JSON.stringify(key.exportKey("components-public"));
+	console.log(publicComponents);
 
-  const text = "Hello RSA!";
-  const encrypted = key.encryptPrivate(text, "base64");
-  console.log("encrypted: ", encrypted);
-  const encrypted2 = key.encryptPrivate(text, "base64");
-  console.log("encrypted: ", encrypted2);
-  const decrypted = key.decryptPublic(encrypted, "utf8");
-  console.log("decrypted: ", decrypted);
+	const text = "Hello RSA!";
+	const encrypted = key.encryptPrivate(text, "base64");
+	console.log("encrypted: ", encrypted);
+	const encrypted2 = key.encryptPrivate(text, "base64");
+	console.log("encrypted: ", encrypted2);
+	const decrypted = key.decryptPublic(encrypted, "utf8");
+	console.log("decrypted: ", decrypted);
 })();
