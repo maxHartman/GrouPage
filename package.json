@@ -19,6 +19,8 @@
 	"dependencies": {
 		"asymmetric-crypto": "^1.0.2",
 		"crypto-js": "^4.0.0",
-		"hybrid-crypto-js": "^0.2.2"
+		"hybrid-crypto-js": "^0.2.2",
+		"node-rsa": "^1.0.8",
+		"simple-asym-crypto": "^1.0.5"
 	}
 }
