@@ -1,21 +1,21 @@
 {
-	"name": "final_project",
+	"name": "groupage",
 	"version": "1.0.0",
-	"description": "__Authors__: Max Hartman, Aspyn Palatnick   __Date__: Spring 2020",
+	"description": "A secure anonymous forum for access controlled groups",
 	"main": "main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW.git"
+		"url": "git+https://github.com/maxHartman/groupage.git"
 	},
-	"author": "",
+	"author": "Max Hartman, Aspyn Palatnick",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW/issues"
+		"url": "https://github.com/maxHartman/groupage/issues"
 	},
-	"homepage": "https://github.com/maxHartman/CIS_700_FINAL_PROJECT_NEW#readme",
+	"homepage": "https://github.com/maxHartman/groupage#readme",
 	"dependencies": {
 		"asymmetric-crypto": "^1.0.2",
 		"crypto-js": "^4.0.0",
