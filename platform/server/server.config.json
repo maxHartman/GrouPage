@@ -1,0 +1,8 @@
+{
+  "development": {
+    "ssl": {
+      "keyPath": "ssl_credentials/localhost/server.key",
+      "certPath": "ssl_credentials/localhost/server.cert"
+    }
+  }
+}
