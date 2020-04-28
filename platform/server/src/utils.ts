@@ -3,8 +3,8 @@ import { assert } from "console";
 import { ErrorObject, RouteDefinition } from "./types";
 
 export function deleteAllKeysFromObjs(objs: object[]): void {
-  objs.forEach(obj => {
-    Object.keys(obj).forEach(key => delete obj[key]);
+  objs.forEach((obj) => {
+    Object.keys(obj).forEach((key) => delete obj[key]);
   });
 }
 

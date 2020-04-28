@@ -14,16 +14,11 @@ const INDEX_HTML_PATH = path.join(
   "index.html"
 );
 
-// If no params to route, request will be passed in.
-// If one param or more params to route, param(s) will be passed in as a
-// JSON objectin first argument
-
-// Always include try catch because catch will catch any
-// errors thrown by a validator, which occurs when validator doesn't pass
+import authorizedGroups from "../../authority.json";
 
 const userService = new UserService();
 
-const publicKeys = [keypair1.publicKey];
+const publicKeys = authorizedGroups.group1;
 
 export async function getViewHome(
   _: Request,

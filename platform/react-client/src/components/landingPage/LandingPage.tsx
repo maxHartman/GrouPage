@@ -1,10 +1,12 @@
-import React from "react";
+import fileDialog from "file-dialog";
+import React, { useState } from "react";
 import TextLoop from "react-text-loop";
 
 import { AppBar, Button, Grid, Toolbar, Typography } from "@material-ui/core";
 
-import keypair1 from "../../keypairs/kp1.json";
 import * as vcs from "../../crypto/vcs";
+import keypair1 from "../../keypairs/kp1.json";
+
 // const vcs = require("../../crypto/vcs");
 
 const TEXT_LOOP_CONTENTS = [
@@ -20,48 +22,69 @@ const TEXT_LOOP_CONTENTS = [
 ];
 
 export default function LandingPage() {
+  const [error, setError] = useState("");
+
   async function requestAuthentication() {
-    const privateKey = keypair1.privateKey;
+    const file = await fileDialog();
+    console.log(file[0]);
+    var reader = new FileReader();
+    reader.readAsText(file[0], "UTF-8");
 
-    // Alice knows what her i value is because she is told
-    // by server as soon as her public key is added
-    const i = 0;
+    reader.onload = async function (evt) {
+      // @ts-ignore
+      const keypairTxt = evt.target.result as string;
+      const keypair = JSON.parse(keypairTxt);
 
-    const eVectorRes = await fetch("/getEVector");
-    const eVectorResJson = await eVectorRes.json();
-    const eVector = eVectorResJson.eVector;
-    const publicKeys = eVectorResJson.publicKeys;
-    console.log(publicKeys);
+      const privateKey = keypair.privateKey;
 
-    console.log(eVector);
-    const decodedX = vcs.decode(eVector, i, privateKey);
-    console.log(decodedX);
+      // Alice knows what her i value is because she is told
+      // by server as soon as her public key is added
 
-    const verifyRes = vcs.verify(eVector, i, privateKey, publicKeys);
-    console.log(verifyRes);
+      const eVectorRes = await fetch("/getEVector");
+      const eVectorResJson = await eVectorRes.json();
+      const eVector = eVectorResJson.eVector;
+      const publicKeys = eVectorResJson.publicKeys;
 
-    if (!verifyRes) {
-      console.log("decodedX did not match!", decodedX);
-      return;
-    }
+      const i = publicKeys.indexOf(keypair.publicKey);
+      if (i === -1) {
+        console.log("Failed to find our public key in publicKeys");
+        setError("Failed to find our public key in publicKeys");
+        return;
+      }
 
-    const res = await fetch("/auth", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // TODO right now we just use a random username
-        // and password and it'll always pass auth
-        username: "anything works here",
-        password: decodedX,
-      }),
-    });
+      console.log(eVector);
+      const decodedX = vcs.decode(eVector, i, privateKey);
+      console.log(decodedX);
 
-    if (res.status === 200) {
-      window.location.reload();
-    }
-    console.log(res);
+      const verifyRes = vcs.verify(eVector, i, privateKey, publicKeys);
+      console.log(verifyRes);
+
+      if (!verifyRes) {
+        console.log("decodedX did not match!", decodedX);
+        setError("decodedX did not match!");
+        return;
+      }
+
+      const res = await fetch("/auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // TODO right now we just use a random username
+          // and password and it'll always pass auth
+          username: "anything works here",
+          password: decodedX,
+        }),
+      });
+
+      if (res.status === 200) {
+        window.location.reload();
+      } else {
+        setError("Failed to requet access");
+      }
+      console.log(res);
+    };
   }
 
   return (
@@ -111,6 +134,11 @@ export default function LandingPage() {
         justify="space-between"
         style={{ justifyContent: "center" }}
       >
+        {error.length > 0 ? (
+          <Grid item xs={12} style={{ textAlign: "center" }}>
+            <Typography style={{ color: "#FF0000" }}>Error: {error}</Typography>
+          </Grid>
+        ) : null}
         <Grid item xs={3} />
         <Grid item xs={6}>
           <Button
