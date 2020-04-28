@@ -3,31 +3,27 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
 import UserErrors from "./services/users/UserErrors";
-import { UserService } from "./services/users/UserService";
-import { User } from "./types";
 
-const userService = new UserService();
+const x = { engineering: "testing", art: "demo string" };
 
-const x = "demo string";
+export type Authenticated = { groupId: string };
 
-export type Authenticated = { authenticated: string };
-
-const authenticatedObj: Authenticated = { authenticated: "authenticated" };
+const authenticatedObj = (groupId: string) => ({
+  groupId,
+});
 
 passport.use(
   "local",
-  new LocalStrategy(async (_, clientsFoundX: string, done) => {
+  new LocalStrategy(async (groupId: string, clientsFoundX: string, done) => {
     try {
-      if (clientsFoundX !== x) {
+      if (clientsFoundX !== x[groupId]) {
         // Client did not find the correct x and thus
         // should note be authenticated
         done(null, null);
         return;
       }
 
-      // await userService.signupUser({ username, password });
-      // const user = await userService.getUser(username);
-      done(null, authenticatedObj);
+      done(null, authenticatedObj(groupId));
     } catch (error) {
       done(null, null, error);
     }
@@ -35,13 +31,11 @@ passport.use(
 );
 
 passport.serializeUser((user: Authenticated, done) => {
-  done(null, user.authenticated);
+  done(null, user.groupId);
 });
 
-passport.deserializeUser(async (username: string, done) => {
-  // TODO
-  // const user = await userService.getUser(username);
-  done(null, authenticatedObj);
+passport.deserializeUser(async (groupId: string, done) => {
+  done(null, authenticatedObj(groupId));
 });
 
 function isLoggedIn(

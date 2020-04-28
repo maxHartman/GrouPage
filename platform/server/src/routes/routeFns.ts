@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import path from "path";
 
 import * as vcs from "../../../react-client/src/crypto/vcs";
+import authorizedGroups from "../../authority.json";
 import { Authenticated, x } from "../authenticator";
 import { UserService } from "../services/users/UserService";
+import { Post } from "../types";
 
 const INDEX_HTML_PATH = path.join(
   __dirname,
@@ -12,14 +14,9 @@ const INDEX_HTML_PATH = path.join(
   "index.html"
 );
 
-import authorizedGroups from "../../authority.json";
-import { Post } from "../types";
-
-const userService = new UserService();
-
-const publicKeys = authorizedGroups.group1;
-
-const posts = [];
+// Add posts array for each group
+const posts = {};
+Object.keys(authorizedGroups).forEach((key) => (posts[key] = []));
 
 export async function getViewHome(
   _: Request,
@@ -59,10 +56,10 @@ export async function logout(
 export async function getPosts(
   req: Request,
   res: Response,
-  auth: Authenticated
+  { groupId }: Authenticated
 ): Promise<void> {
   try {
-    res.send({ posts });
+    res.send({ posts: posts[groupId] });
   } catch (error) {
     res.status(470).send(error);
   }
@@ -71,10 +68,10 @@ export async function getPosts(
 export async function addPost(
   post: Post,
   res: Response,
-  auth: Authenticated
+  { groupId }: Authenticated
 ): Promise<void> {
   try {
-    posts.push(post);
+    posts[groupId].push(post);
     res.sendStatus(200);
   } catch (error) {
     res.status(470).send(error);
@@ -93,10 +90,17 @@ export async function getUserInfo(
   }
 }
 
-export async function getEVector(_: Request, res: Response): Promise<void> {
+export async function getEVector(
+  groupId: string,
+  res: Response
+): Promise<void> {
   try {
     // TODO implement
-    const eVector = vcs.encode(x, publicKeys);
+    const publicKeys = authorizedGroups[groupId];
+    if (publicKeys == null) {
+      throw new Error("Group not found");
+    }
+    const eVector = vcs.encode(x[groupId], publicKeys);
     res.send({ eVector, publicKeys });
   } catch (error) {
     res.status(470).send(error);
