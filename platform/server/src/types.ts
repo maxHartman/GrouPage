@@ -56,15 +56,22 @@ export type DefinedRoutes<T> = {
     getUserInfo: T;
     logout: T;
   };
+  posts: { getPosts: T; addPost: T };
 };
 
 /**
  * Users
  */
 
+// TODO delete
 export type User = {
   username: string;
   password: string;
+};
+
+export type Post = {
+  timestamp: number;
+  content: string;
 };
 
 export type SignupUserParams = {

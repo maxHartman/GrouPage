@@ -7,11 +7,13 @@ import {
 } from "../types";
 import { isRouteDefinition } from "../utils";
 import {
+  addPost,
   authenticateUser,
+  getEVector,
+  getPosts,
   getUserInfo,
   getViewHome,
   logout,
-  getEVector,
 } from "./routeFns";
 import routeValidators from "./routeValidators";
 
@@ -22,6 +24,20 @@ const routes: DefinedRoutes<RouteDefinition> = {
       endpoint: "/",
       type: RequestType.GET,
       validators: routeValidators.views.home,
+    },
+  },
+  posts: {
+    getPosts: {
+      fn: getPosts,
+      endpoint: "/getPosts",
+      type: RequestType.GET,
+      validators: routeValidators.posts.getPosts,
+    },
+    addPost: {
+      fn: addPost,
+      endpoint: "/addPost",
+      type: RequestType.POST,
+      validators: routeValidators.posts.addPost,
     },
   },
   users: {

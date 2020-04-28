@@ -2,10 +2,8 @@ import { Request, Response } from "express";
 import path from "path";
 
 import * as vcs from "../../../react-client/src/crypto/vcs";
-import keypair1 from "../../../react-client/src/keypairs/kp1.json";
 import { Authenticated, x } from "../authenticator";
 import { UserService } from "../services/users/UserService";
-import { User } from "../types";
 
 const INDEX_HTML_PATH = path.join(
   __dirname,
@@ -15,15 +13,18 @@ const INDEX_HTML_PATH = path.join(
 );
 
 import authorizedGroups from "../../authority.json";
+import { Post } from "../types";
 
 const userService = new UserService();
 
 const publicKeys = authorizedGroups.group1;
 
+const posts = [];
+
 export async function getViewHome(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   res.sendFile(INDEX_HTML_PATH);
 }
@@ -31,10 +32,9 @@ export async function getViewHome(
 export async function authenticateUser(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    console.log("WOAH"); // TODO
     res.sendStatus(200);
   } catch (error) {
     res.status(470).send(error);
@@ -44,11 +44,38 @@ export async function authenticateUser(
 export async function logout(
   req: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    await userService.logoutUser(req);
+    req.logout();
+    await new Promise((resolve) => req.session.destroy(resolve));
+    // await userService.logoutUser(req);
     res.redirect("/");
+  } catch (error) {
+    res.status(470).send(error);
+  }
+}
+
+export async function getPosts(
+  req: Request,
+  res: Response,
+  auth: Authenticated
+): Promise<void> {
+  try {
+    res.send({ posts });
+  } catch (error) {
+    res.status(470).send(error);
+  }
+}
+
+export async function addPost(
+  post: Post,
+  res: Response,
+  auth: Authenticated
+): Promise<void> {
+  try {
+    posts.push(post);
+    res.sendStatus(200);
   } catch (error) {
     res.status(470).send(error);
   }
@@ -60,8 +87,6 @@ export async function getUserInfo(
   auth: Authenticated
 ): Promise<void> {
   try {
-    // const userInfo = await userService.getUser(user.username);
-    // res.send(userInfo);
     res.send(auth);
   } catch (error) {
     res.status(470).send(error);

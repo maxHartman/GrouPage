@@ -1,8 +1,6 @@
 import { ValidationChain } from "express-validator";
 
-import { GeneralError } from "../errors/GeneralError";
 import { DefinedRoutes } from "../types";
-import RouteErrors from "./RouteErrors";
 
 const routeValidators: DefinedRoutes<ValidationChain[]> = {
   views: {
@@ -14,6 +12,7 @@ const routeValidators: DefinedRoutes<ValidationChain[]> = {
     logout: [],
     getUserInfo: [],
   },
+  posts: { addPost: [], getPosts: [] },
 };
 
 export = routeValidators;
