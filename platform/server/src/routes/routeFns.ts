@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import path from "path";
 
+import * as vcs from "../../../react-client/src/crypto/vcs";
+import keypair1 from "../../../react-client/src/keypairs/kp1.json";
+import { Authenticated, x } from "../authenticator";
 import { UserService } from "../services/users/UserService";
 import { User } from "../types";
 
@@ -20,6 +23,8 @@ const INDEX_HTML_PATH = path.join(
 
 const userService = new UserService();
 
+const publicKeys = [keypair1.publicKey];
+
 export async function getViewHome(
   _: Request,
   res: Response,
@@ -34,10 +39,10 @@ export async function authenticateUser(
   user: User
 ): Promise<void> {
   try {
-    console.log("WOAH");
+    console.log("WOAH"); // TODO
     res.sendStatus(200);
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
   }
 }
 
@@ -50,19 +55,30 @@ export async function logout(
     await userService.logoutUser(req);
     res.redirect("/");
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
   }
 }
 
 export async function getUserInfo(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    const userInfo = await userService.getUser(user.username);
-    res.send(userInfo);
+    // const userInfo = await userService.getUser(user.username);
+    // res.send(userInfo);
+    res.send(auth);
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
+  }
+}
+
+export async function getEVector(_: Request, res: Response): Promise<void> {
+  try {
+    // TODO implement
+    const eVector = vcs.encode(x, publicKeys);
+    res.send({ eVector, publicKeys });
+  } catch (error) {
+    res.status(470).send(error);
   }
 }

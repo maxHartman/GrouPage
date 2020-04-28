@@ -51,6 +51,7 @@ export type DefinedRoutes<T> = {
     home: T;
   };
   users: {
+    getEVector: T;
     authenticateUser: T;
     getUserInfo: T;
     logout: T;

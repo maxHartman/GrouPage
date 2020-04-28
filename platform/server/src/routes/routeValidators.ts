@@ -9,6 +9,7 @@ const routeValidators: DefinedRoutes<ValidationChain[]> = {
     home: [],
   },
   users: {
+    getEVector: [],
     authenticateUser: [],
     logout: [],
     getUserInfo: [],

@@ -3,6 +3,10 @@ import TextLoop from "react-text-loop";
 
 import { AppBar, Button, Grid, Toolbar, Typography } from "@material-ui/core";
 
+import keypair1 from "../../keypairs/kp1.json";
+import * as vcs from "../../crypto/vcs";
+// const vcs = require("../../crypto/vcs");
+
 const TEXT_LOOP_CONTENTS = [
   // Leave empty string in so original message is in
   "",
@@ -16,6 +20,50 @@ const TEXT_LOOP_CONTENTS = [
 ];
 
 export default function LandingPage() {
+  async function requestAuthentication() {
+    const privateKey = keypair1.privateKey;
+
+    // Alice knows what her i value is because she is told
+    // by server as soon as her public key is added
+    const i = 0;
+
+    const eVectorRes = await fetch("/getEVector");
+    const eVectorResJson = await eVectorRes.json();
+    const eVector = eVectorResJson.eVector;
+    const publicKeys = eVectorResJson.publicKeys;
+    console.log(publicKeys);
+
+    console.log(eVector);
+    const decodedX = vcs.decode(eVector, i, privateKey);
+    console.log(decodedX);
+
+    const verifyRes = vcs.verify(eVector, i, privateKey, publicKeys);
+    console.log(verifyRes);
+
+    if (!verifyRes) {
+      console.log("decodedX did not match!", decodedX);
+      return;
+    }
+
+    const res = await fetch("/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // TODO right now we just use a random username
+        // and password and it'll always pass auth
+        username: "anything works here",
+        password: decodedX,
+      }),
+    });
+
+    if (res.status === 200) {
+      window.location.reload();
+    }
+    console.log(res);
+  }
+
   return (
     <div style={{ backgroundColor: "#F5F5F5", flex: 1, minHeight: "100vh" }}>
       <AppBar>
@@ -67,29 +115,11 @@ export default function LandingPage() {
         <Grid item xs={6}>
           <Button
             style={{
-              backgroundColor: "#4051B6",
+              backgroundColor: "#3F5673",
               color: "white",
               width: "100%",
             }}
-            onClick={async () => {
-              const res = await fetch("/auth", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  // TODO right now we just use a random username
-                  // and password and it'll always pass auth
-                  username: Math.random().toString(),
-                  password: Math.random().toString(),
-                }),
-              });
-
-              if (res.status === 200) {
-                window.location.reload();
-              }
-              console.log(res);
-            }}
+            onClick={requestAuthentication}
           >
             Request Access
           </Button>

@@ -6,7 +6,13 @@ import {
   RoutesObject,
 } from "../types";
 import { isRouteDefinition } from "../utils";
-import { authenticateUser, getUserInfo, getViewHome, logout } from "./routeFns";
+import {
+  authenticateUser,
+  getUserInfo,
+  getViewHome,
+  logout,
+  getEVector,
+} from "./routeFns";
 import routeValidators from "./routeValidators";
 
 const routes: DefinedRoutes<RouteDefinition> = {
@@ -37,6 +43,12 @@ const routes: DefinedRoutes<RouteDefinition> = {
       endpoint: "/getUserInfo",
       type: RequestType.GET,
       validators: routeValidators.users.getUserInfo,
+    },
+    getEVector: {
+      fn: getEVector,
+      endpoint: "/getEVector",
+      type: RequestType.GET,
+      validators: routeValidators.users.getEVector,
     },
   },
 };

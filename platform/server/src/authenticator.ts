@@ -8,28 +8,40 @@ import { User } from "./types";
 
 const userService = new UserService();
 
+const x = "demo string";
+
+export type Authenticated = { authenticated: string };
+
+const authenticatedObj: Authenticated = { authenticated: "authenticated" };
+
 passport.use(
   "local",
-  new LocalStrategy(async (username, password, done) => {
+  new LocalStrategy(async (_, clientsFoundX: string, done) => {
     try {
-      // TODO do actual authentication
-      await userService.signupUser({ username, password });
-      const user = await userService.getUser(username);
-      done(null, user);
+      if (clientsFoundX !== x) {
+        // Client did not find the correct x and thus
+        // should note be authenticated
+        done(null, null);
+        return;
+      }
+
+      // await userService.signupUser({ username, password });
+      // const user = await userService.getUser(username);
+      done(null, authenticatedObj);
     } catch (error) {
       done(null, null, error);
     }
   })
 );
 
-passport.serializeUser((user: User, done) => {
-  done(null, user.username);
+passport.serializeUser((user: Authenticated, done) => {
+  done(null, user.authenticated);
 });
 
 passport.deserializeUser(async (username: string, done) => {
   // TODO
-  const user = await userService.getUser(username);
-  done(null, user);
+  // const user = await userService.getUser(username);
+  done(null, authenticatedObj);
 });
 
 function isLoggedIn(
@@ -44,4 +56,4 @@ function isLoggedIn(
   return response.send(UserErrors.USER_NOT_AUTHENTICATED);
 }
 
-export { passport, isLoggedIn };
+export { passport, isLoggedIn, x };

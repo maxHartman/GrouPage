@@ -15,7 +15,6 @@
     "@types/react-router-dom": "^5.1.3",
     "@types/string-template": "^1.0.2",
     "bootstrap": "^4.4.1",
-    "fuzzy-search": "^3.2.1",
     "jquery": "^3.4.1",
     "node-sass": "^4.13.1",
     "npm-watch": "^0.6.0",
@@ -23,7 +22,6 @@
     "react-bootstrap": "^1.0.0",
     "react-check-auth": "^0.2.0-alpha.2",
     "react-dom": "^16.13.0",
-    "react-js-pull-to-refresh": "^1.2.2",
     "react-scripts": "3.4.0",
     "react-share": "^4.1.0",
     "react-text-loop": "^2.3.0",
@@ -31,7 +29,12 @@
     "react-useinterval": "^1.0.1",
     "string-template": "^1.0.0",
     "styled-components": "^5.0.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "asymmetric-crypto": "^1.0.2",
+    "crypto-js": "^4.0.0",
+    "hybrid-crypto-js": "^0.2.2",
+    "node-rsa": "^1.0.8",
+    "simple-asym-crypto": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
