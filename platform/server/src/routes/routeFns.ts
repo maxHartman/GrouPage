@@ -59,7 +59,11 @@ export async function getPosts(
   { groupId }: Authenticated
 ): Promise<void> {
   try {
-    res.send({ posts: posts[groupId] });
+    res.send({
+      posts: posts[groupId].sort(
+        (post1: Post, post2: Post) => post2.timestamp - post1.timestamp
+      ),
+    });
   } catch (error) {
     res.status(470).send(error);
   }

@@ -84,9 +84,9 @@ export default function LandingPage() {
 
   return (
     <div style={{ backgroundColor: "#F5F5F5", flex: 1, minHeight: "100vh" }}>
-      <AppBar>
+      <AppBar style={{ backgroundColor: "#3F5673" }}>
         <Toolbar>
-          <div style={{ backgroundColor: "3F5673", flex: 1 }}>
+          <div style={{ flex: 1 }}>
             <img
               src="logo.png"
               style={{
@@ -120,23 +120,14 @@ export default function LandingPage() {
           </Typography>
         </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={6}
-        direction="row"
-        alignItems="stretch"
-        alignContent="space-between"
-        justify="space-between"
-        style={{ justifyContent: "center" }}
-      >
+      <Grid container spacing={3} style={{ justifyContent: "center" }}>
         {error.length > 0 ? (
           <Grid item xs={12} style={{ textAlign: "center" }}>
             <Typography style={{ color: "#FF0000" }}>Error: {error}</Typography>
           </Grid>
         ) : null}
-        <Grid item xs={3} />
         {GROUP_IDS.map((groupId) => (
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Button
               style={{
                 backgroundColor: "#3F5673",
@@ -149,7 +140,6 @@ export default function LandingPage() {
             </Button>
           </Grid>
         ))}
-        <Grid item xs={3} />
       </Grid>
     </div>
   );
