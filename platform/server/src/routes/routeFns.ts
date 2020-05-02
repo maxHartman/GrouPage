@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import path from "path";
 
-import { UserService } from "../services/users/UserService";
-import { User } from "../types";
+import * as vcs from "../../../react-client/src/crypto/vcs";
+import authorizedGroups from "../../authority.json";
+import { Authenticated, x } from "../authenticator";
+
+import { Post } from "../types";
 
 const INDEX_HTML_PATH = path.join(
   __dirname,
@@ -11,19 +14,14 @@ const INDEX_HTML_PATH = path.join(
   "index.html"
 );
 
-// If no params to route, request will be passed in.
-// If one param or more params to route, param(s) will be passed in as a
-// JSON objectin first argument
-
-// Always include try catch because catch will catch any
-// errors thrown by a validator, which occurs when validator doesn't pass
-
-const userService = new UserService();
+// Add posts array for each group
+const posts = {};
+Object.keys(authorizedGroups).forEach((key) => (posts[key] = []));
 
 export async function getViewHome(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   res.sendFile(INDEX_HTML_PATH);
 }
@@ -31,38 +29,82 @@ export async function getViewHome(
 export async function authenticateUser(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    console.log("WOAH");
     res.sendStatus(200);
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
   }
 }
 
 export async function logout(
   req: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    await userService.logoutUser(req);
+    req.logout();
+    await new Promise((resolve) => req.session.destroy(resolve));
     res.redirect("/");
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
+  }
+}
+
+export async function getPosts(
+  req: Request,
+  res: Response,
+  { groupId }: Authenticated
+): Promise<void> {
+  try {
+    res.send({
+      posts: posts[groupId].sort(
+        (post1: Post, post2: Post) => post2.timestamp - post1.timestamp
+      ),
+    });
+  } catch (error) {
+    res.status(470).send(error);
+  }
+}
+
+export async function addPost(
+  post: Post,
+  res: Response,
+  { groupId }: Authenticated
+): Promise<void> {
+  try {
+    posts[groupId].push(post);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(470).send(error);
   }
 }
 
 export async function getUserInfo(
   _: Request,
   res: Response,
-  user: User
+  auth: Authenticated
 ): Promise<void> {
   try {
-    const userInfo = await userService.getUser(user.username);
-    res.send(userInfo);
+    res.send(auth);
   } catch (error) {
-    res.status(469).send(error);
+    res.status(470).send(error);
+  }
+}
+
+export async function getEVector(
+  groupId: string,
+  res: Response
+): Promise<void> {
+  try {
+    const publicKeys = authorizedGroups[groupId];
+    if (publicKeys == null) {
+      throw new Error("Group not found");
+    }
+    const eVector = vcs.encode(x[groupId], publicKeys);
+    res.send({ eVector, publicKeys });
+  } catch (error) {
+    res.status(470).send(error);
   }
 }

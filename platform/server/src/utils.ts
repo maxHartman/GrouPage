@@ -2,12 +2,6 @@ import { assert } from "console";
 
 import { ErrorObject, RouteDefinition } from "./types";
 
-export function deleteAllKeysFromObjs(objs: object[]): void {
-  objs.forEach(obj => {
-    Object.keys(obj).forEach(key => delete obj[key]);
-  });
-}
-
 export function assertErrorIdsDoNotRepeat(errors: ErrorObject) {
   // Ensure no error ids overlap
   const seenIds = new Set();
