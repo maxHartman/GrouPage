@@ -12,5 +12,16 @@ Our project intends to address the question of how to create an online service t
 2. Implement a functional prototype of the anonymous authentication system
 3. Demonstrate the effectiveness in practice of the system
 
+## Steps to Run
+1. Open a terminal window
+2. Run the following: `cd platform/react-client`
+3. `yarn`
+4. `yarn watch` (ignore errors that may show, they are only typescript related)
+5. Open another terminal window 
+6. `cd platform/server`  
+7. `yarn`  
+8. `yarn watch`  
+9. Finally, in your favorite web browser, go to `https://localhost:443`
+
 ## About Us
 We are 2 Computer & Information Science Master's candidates at the University of Pennsylvania. This work was done to fulfill a final project for CIS 700: Privacy enhancing technologies. The course website with the project requirements can be found [here](https://www.cis.upenn.edu/~sga001/classes/cis700s20/).
