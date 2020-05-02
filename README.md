@@ -25,3 +25,5 @@ Our project intends to address the question of how to create an online service t
 
 ## About Us
 We are 2 Computer & Information Science Master's candidates at the University of Pennsylvania. This work was done to fulfill a final project for CIS 700: Privacy enhancing technologies. The course website with the project requirements can be found [here](https://www.cis.upenn.edu/~sga001/classes/cis700s20/).
+
+Note: We use the hybrid-crypto-js npm module for public-private key encryption. However, we needed to modify the code in this module to allow for deterministic encryption (using a deterministic initialization vector rather than a randomized one), which is why you will see that library included in our source code rather than just as an npm module.
