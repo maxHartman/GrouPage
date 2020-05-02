@@ -39,9 +39,18 @@ function decode(cipherVector, i, secretKey) {
  * @param 	{Array<String>}	publicKeys		Vector of public keys
  * @returns {Boolean}											The validity of the comparison
  */
+// function verify(cipherVector, i, secretKey, publicKeys) {
+//   const plaintext = decode(cipherVector, i, secretKey, publicKeys);
+//   const checkingVector = encode(plaintext, publicKeys);
+//   return utils.keysEqual(checkingVector, cipherVector);
+// }
 function verify(cipherVector, i, secretKey, publicKeys) {
   const plaintext = decode(cipherVector, i, secretKey, publicKeys);
   const checkingVector = encode(plaintext, publicKeys);
+
+  console.log("Checking vector", checkingVector);
+  console.log("Cipher vector", cipherVector);
+
   return utils.keysEqual(checkingVector, cipherVector);
 }
 

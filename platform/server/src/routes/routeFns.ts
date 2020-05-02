@@ -4,7 +4,7 @@ import path from "path";
 import * as vcs from "../../../react-client/src/crypto/vcs";
 import authorizedGroups from "../../authority.json";
 import { Authenticated, x } from "../authenticator";
-import { UserService } from "../services/users/UserService";
+
 import { Post } from "../types";
 
 const INDEX_HTML_PATH = path.join(
@@ -46,7 +46,6 @@ export async function logout(
   try {
     req.logout();
     await new Promise((resolve) => req.session.destroy(resolve));
-    // await userService.logoutUser(req);
     res.redirect("/");
   } catch (error) {
     res.status(470).send(error);
@@ -99,7 +98,6 @@ export async function getEVector(
   res: Response
 ): Promise<void> {
   try {
-    // TODO implement
     const publicKeys = authorizedGroups[groupId];
     if (publicKeys == null) {
       throw new Error("Group not found");

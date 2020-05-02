@@ -21,8 +21,6 @@ export enum RequestType {
 export type RouteFn = (
   req: any,
   res: express.Response,
-  // TODO consider having user be of type UserProfile (or whatever our internal
-  // user representation is)
   user?: Express.User
 ) => Promise<void>;
 
@@ -33,7 +31,6 @@ export type RouteDefinition = {
   validators: ValidationChain[];
   requireAuthentication?: boolean;
   preValidatorCustomMiddleware?: any[];
-  // TODO Maybe should be express.NextFunction or RequestHandler?
   customMiddleware?: any[];
   afterRoute?: express.NextFunction[];
 };
@@ -60,21 +57,10 @@ export type DefinedRoutes<T> = {
 };
 
 /**
- * Users
+ * Posts
  */
-
-// TODO delete
-export type User = {
-  username: string;
-  password: string;
-};
 
 export type Post = {
   timestamp: number;
   content: string;
-};
-
-export type SignupUserParams = {
-  username: string;
-  password: string;
 };

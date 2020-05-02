@@ -1,7 +1,9 @@
 const CryptoJS = require("crypto-js");
 const crypto = require("asymmetric-crypto");
 const RSA = require("hybrid-crypto-js").RSA;
-const Crypt = require("hybrid-crypto-js").Crypt;
+// const Crypt = require("hybrid-crypto-js").Crypt;
+const Crypt = require("../crypto/hybridcryptojsmod/hybrid-crypto-js/lib/index")
+  .Crypt;
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////      SYMMETRIC      /////////////////////////////////
